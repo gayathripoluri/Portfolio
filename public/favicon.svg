@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title desc">
+  <title id="title">G monogram</title>
+  <desc id="desc">Gayathri Poluri monogram</desc>
+  <rect width="64" height="64" rx="10" fill="#0A0A0B"/>
+  <path d="M45 24c-2-2-5-3-9-3-7 0-12 4-12 11s5 11 12 11c2 0 4 0 6-1v-5h-7v-6h15v15c-4 3-9 4-14 4-12 0-20-7-20-18s8-18 20-18c6 0 11 2 15 5l-6 5Z" fill="#4F9EFF"/>
+</svg>

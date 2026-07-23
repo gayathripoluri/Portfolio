@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">Gayathri Poluri - Full-Stack Software Engineer</title>
+  <desc id="desc">Portfolio of Gayathri Poluri, a full-stack software engineer building backend systems and AI-powered tools.</desc>
+  <rect width="1200" height="630" fill="#0A0A0B"/>
+  <path d="M0 0h1200v630H0z" fill="url(#grid)" opacity=".45"/>
+  <rect x="72" y="72" width="1056" height="486" rx="8" fill="#111114" stroke="#292932"/>
+  <rect x="72" y="72" width="10" height="486" rx="5" fill="#4F9EFF"/>
+  <circle cx="1010" cy="150" r="92" fill="#4F9EFF" opacity=".08"/>
+  <circle cx="1010" cy="150" r="58" fill="none" stroke="#4F9EFF" stroke-opacity=".28"/>
+  <text x="132" y="166" fill="#4F9EFF" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="24" letter-spacing="6">GP / PORTFOLIO</text>
+  <text x="132" y="286" fill="#E8E8EA" font-family="Inter, Arial, sans-serif" font-size="64" font-weight="700">Gayathri Poluri</text>
+  <text x="136" y="352" fill="#9999AA" font-family="Inter, Arial, sans-serif" font-size="30">Full-Stack Software Engineer</text>
+  <text x="136" y="430" fill="#6B6B7A" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="20">BACKEND SYSTEMS  /  AI TOOLS  /  DIGITAL EXPERIENCES</text>
+  <path d="M136 480h380" stroke="#4F9EFF" stroke-width="2"/>
+  <defs>
+    <pattern id="grid" width="42" height="42" patternUnits="userSpaceOnUse">
+      <path d="M42 0H0V42" fill="none" stroke="#FFF" stroke-opacity=".04"/>
+    </pattern>
+  </defs>
+</svg>

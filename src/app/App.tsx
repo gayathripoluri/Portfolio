@@ -347,9 +347,9 @@ function HeroSection() {
 function AboutSection() {
   const C = useTheme();
   return (
-    <section id="about" className="py-32" style={{ background: C.bg }}>
+    <section id="about" aria-labelledby="about-heading" className="py-32" style={{ background: C.bg }}>
       <div className="max-w-6xl mx-auto px-6">
-        <SectionLabel>About</SectionLabel>
+        <SectionLabel id="about-heading">About</SectionLabel>
 
         <div className="grid md:grid-cols-2 gap-16 mt-12">
           <div>
@@ -405,9 +405,9 @@ function AboutSection() {
 function ProjectsSection() {
   const C = useTheme();
   return (
-    <section id="projects" className="py-32" style={{ background: C.bgAlt }}>
+    <section id="projects" aria-labelledby="projects-heading" className="py-32" style={{ background: C.bgAlt }}>
       <div className="max-w-6xl mx-auto px-6">
-        <SectionLabel>Projects</SectionLabel>
+        <SectionLabel id="projects-heading">Projects</SectionLabel>
 
         <div
           className="mt-12 mb-8 p-8 md:p-12 relative overflow-hidden"
@@ -547,9 +547,9 @@ function ProjectCard({ project }: { project: typeof projects[0] }) {
 function ExperienceSection() {
   const C = useTheme();
   return (
-    <section id="experience" className="py-32" style={{ background: C.bg }}>
+    <section id="experience" aria-labelledby="experience-heading" className="py-32" style={{ background: C.bg }}>
       <div className="max-w-6xl mx-auto px-6">
-        <SectionLabel>Experience</SectionLabel>
+        <SectionLabel id="experience-heading">Experience</SectionLabel>
 
         <div className="mt-12 max-w-2xl">
           <div className="relative pl-6" style={{ borderLeft: `1px solid ${C.timelineLine}` }}>
@@ -600,9 +600,9 @@ function ExperienceSection() {
 function ContactSection() {
   const C = useTheme();
   return (
-    <section id="contact" className="py-32" style={{ background: C.bgAlt }}>
+    <section id="contact" aria-labelledby="contact-heading" className="py-32" style={{ background: C.bgAlt }}>
       <div className="max-w-6xl mx-auto px-6">
-        <SectionLabel>Contact</SectionLabel>
+        <SectionLabel id="contact-heading">Contact</SectionLabel>
 
         <div className="mt-12 grid md:grid-cols-2 gap-16 items-start">
           <div>
@@ -702,16 +702,17 @@ function ContactSection() {
   );
 }
 
-function SectionLabel({ children }: { children: React.ReactNode }) {
+function SectionLabel({ children, id }: { children: React.ReactNode; id: string }) {
   const C = useTheme();
   return (
     <div className="flex items-center gap-4">
-      <span
+      <h2
+        id={id}
         className="text-xs uppercase tracking-widest"
         style={{ color: C.accent, fontFamily: "'JetBrains Mono', monospace" }}
       >
         {children}
-      </span>
+      </h2>
       <div className="flex-1 h-px" style={{ background: C.borderSubtle, maxWidth: "160px" }} />
     </div>
   );
