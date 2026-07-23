@@ -1,5 +1,5 @@
-import { useState, createContext, useContext } from "react";
-import { Github, Linkedin, Mail, Phone, MapPin, ExternalLink, ChevronDown, Menu, X, Sun, Moon } from "lucide-react";
+import { useState, useEffect, createContext, useContext } from "react";
+import { Github, Linkedin, Mail, MapPin, ExternalLink, ChevronDown, Menu, X, Sun, Moon } from "lucide-react";
 
 const dark = {
   bg: "#0A0A0B",
@@ -8,9 +8,9 @@ const dark = {
   cardHover: "#161618",
   fg: "#E8E8EA",
   fgMuted: "#9999AA",
-  fgDim: "#6B6B7A",
-  fgDimmer: "#4F4F5F",
-  fgDimmest: "#3A3A4A",
+  fgDim: "#A1A1AF",
+  fgDimmer: "#858594",
+  fgDimmest: "#696978",
   border: "rgba(255,255,255,0.07)",
   borderSubtle: "rgba(255,255,255,0.06)",
   tagBg: "#1A1A1F",
@@ -111,18 +111,18 @@ const projects = [
 
 const experience = [
   {
-    role: "Python Developer",
-    org: "ADP",
-    period: "Jan 2025 – Mar 2025",
-    type: "work",
-    detail: "Designed Python backend microservices on the Pay Direct platform using AWS, supporting secure salary transfer workflows for thousands of U.S. payroll transactions. Diagnosed and resolved production issues through root-cause analysis, improving system reliability.",
-  },
-  {
     role: "M.S. in Computer Science",
     org: "Seattle University",
     period: "Mar 2025 – Present",
     type: "education",
     detail: "GPA 3.8/4.0, Student Honor Roll (×2)",
+  },
+  {
+    role: "Python Developer",
+    org: "ADP",
+    period: "Jan 2025 – Mar 2025",
+    type: "work",
+    detail: "Designed Python backend microservices on the Pay Direct platform using AWS, supporting secure salary transfer workflows for thousands of U.S. payroll transactions. Diagnosed and resolved production issues through root-cause analysis, improving system reliability.",
   },
   {
     role: "B.Tech in Computer Science & Engineering",
@@ -138,17 +138,14 @@ function NavBar({ isDark, toggle }: { isDark: boolean; toggle: () => void }) {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
-  useState(() => {
+  useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
+    onScroll();
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
   });
 
   const links = ["About", "Projects", "Experience", "Contact"];
-  const scrollTo = (id: string) => {
-    document.getElementById(id.toLowerCase())?.scrollIntoView({ behavior: "smooth" });
-    setOpen(false);
-  };
 
   return (
     <header
@@ -168,23 +165,23 @@ function NavBar({ isDark, toggle }: { isDark: boolean; toggle: () => void }) {
           gp
         </span>
 
-        <div className="hidden md:flex items-center gap-8">
+        <div className="hidden md:flex items-center gap-8" aria-label="Primary navigation">
           {links.map((l) => (
-            <button
+            <a
               key={l}
-              onClick={() => scrollTo(l)}
+              href={`#${l.toLowerCase()}`}
               className="text-sm tracking-wide transition-colors duration-200"
-              style={{ color: C.fgDim, fontFamily: "'Inter', sans-serif" }}
+              style={{ color: C.fgDim, fontFamily: "'Manrope', sans-serif" }}
               onMouseEnter={(e) => (e.currentTarget.style.color = C.fg)}
               onMouseLeave={(e) => (e.currentTarget.style.color = C.fgDim)}
             >
               {l}
-            </button>
+            </a>
           ))}
 
           <button
             onClick={toggle}
-            className="flex items-center justify-center w-8 h-8 rounded-sm transition-all duration-200"
+            className="flex items-center justify-center w-11 h-11 rounded-sm transition-all duration-200 focus-visible:outline-none focus-visible:ring-2"
             style={{ color: C.fgDim, border: `1px solid ${C.border}` }}
             onMouseEnter={(e) => {
               e.currentTarget.style.color = C.accent;
@@ -194,6 +191,7 @@ function NavBar({ isDark, toggle }: { isDark: boolean; toggle: () => void }) {
               e.currentTarget.style.color = C.fgDim;
               e.currentTarget.style.borderColor = C.border;
             }}
+            aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
             title={isDark ? "Switch to light mode" : "Switch to dark mode"}
           >
             {isDark ? <Sun size={14} /> : <Moon size={14} />}
@@ -203,13 +201,21 @@ function NavBar({ isDark, toggle }: { isDark: boolean; toggle: () => void }) {
         <div className="md:hidden flex items-center gap-3">
           <button
             onClick={toggle}
-            className="p-1"
+            className="flex items-center justify-center w-11 h-11 p-1 focus-visible:outline-none focus-visible:ring-2"
             style={{ color: C.fgDim }}
+            aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
             title={isDark ? "Light mode" : "Dark mode"}
           >
             {isDark ? <Sun size={16} /> : <Moon size={16} />}
           </button>
-          <button className="p-1" style={{ color: C.fgDim }} onClick={() => setOpen(!open)}>
+          <button
+            className="flex items-center justify-center w-11 h-11 p-1 focus-visible:outline-none focus-visible:ring-2"
+            style={{ color: C.fgDim }}
+            onClick={() => setOpen(!open)}
+            aria-label={open ? "Close navigation menu" : "Open navigation menu"}
+            aria-expanded={open}
+            aria-controls="mobile-navigation"
+          >
             {open ? <X size={20} /> : <Menu size={20} />}
           </button>
         </div>
@@ -217,18 +223,20 @@ function NavBar({ isDark, toggle }: { isDark: boolean; toggle: () => void }) {
 
       {open && (
         <div
+          id="mobile-navigation"
           className="md:hidden border-t"
           style={{ background: C.navBg, borderColor: C.borderSubtle }}
         >
           {links.map((l) => (
-            <button
+            <a
               key={l}
-              onClick={() => scrollTo(l)}
+              href={`#${l.toLowerCase()}`}
+              onClick={() => setOpen(false)}
               className="block w-full text-left px-6 py-4 text-sm"
-              style={{ color: C.fgDim, fontFamily: "'Inter', sans-serif" }}
+              style={{ color: C.fgDim, fontFamily: "'Manrope', sans-serif" }}
             >
               {l}
-            </button>
+            </a>
           ))}
         </div>
       )}
@@ -273,7 +281,7 @@ function HeroSection() {
           <h1
             className="font-bold leading-none mb-6"
             style={{
-              fontFamily: "'Inter', sans-serif",
+              fontFamily: "'Manrope', sans-serif",
               fontSize: "clamp(2.8rem, 8vw, 6rem)",
               color: C.fg,
               letterSpacing: "-0.03em",
@@ -286,7 +294,7 @@ function HeroSection() {
 
           <p
             className="text-lg mb-6 max-w-xl leading-relaxed"
-            style={{ color: C.fgMuted, fontFamily: "'Inter', sans-serif", fontWeight: 400 }}
+            style={{ color: C.fgMuted, fontFamily: "'Manrope', sans-serif", fontWeight: 400 }}
           >
             Full-Stack Engineer building scalable systems,{" "}
             <span style={{ color: C.fg }}>AI-powered tools</span>, and interactive experiences.
@@ -294,7 +302,7 @@ function HeroSection() {
 
           <p
             className="text-base mb-10 max-w-2xl leading-relaxed"
-            style={{ color: C.fgDim, fontFamily: "'Inter', sans-serif" }}
+            style={{ color: C.fgDim, fontFamily: "'Manrope', sans-serif" }}
           >
             M.S. Computer Science student at Seattle University with hands-on experience across the full stack —
             from cloud-native backend microservices to React frontends to game development.
@@ -308,7 +316,7 @@ function HeroSection() {
               style={{
                 background: C.accent,
                 color: C.isDark ? "#0A0A0B" : "#FFFFFF",
-                fontFamily: "'Inter', sans-serif",
+                fontFamily: "'Manrope', sans-serif",
                 border: "none",
                 borderRadius: "2px",
               }}
@@ -321,7 +329,7 @@ function HeroSection() {
               style={{
                 background: "transparent",
                 color: C.fg,
-                fontFamily: "'Inter', sans-serif",
+                fontFamily: "'Manrope', sans-serif",
                 border: `1px solid ${C.border}`,
                 borderRadius: "2px",
               }}
@@ -334,7 +342,7 @@ function HeroSection() {
         </div>
 
         <div
-          className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 animate-bounce"
+          className="absolute bottom-0 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 animate-bounce"
           style={{ color: C.fgDimmest }}
         >
           <ChevronDown size={18} />
@@ -347,21 +355,21 @@ function HeroSection() {
 function AboutSection() {
   const C = useTheme();
   return (
-    <section id="about" aria-labelledby="about-heading" className="py-32" style={{ background: C.bg }}>
+    <section id="about" aria-labelledby="about-heading" className="py-24 md:py-32" style={{ background: C.bg }}>
       <div className="max-w-6xl mx-auto px-6">
         <SectionLabel id="about-heading">About</SectionLabel>
 
-        <div className="grid md:grid-cols-2 gap-16 mt-12">
+        <div className="grid md:grid-cols-2 gap-12 md:gap-16 mt-10 md:mt-12">
           <div>
             <h2
-              className="text-3xl font-semibold mb-6 leading-tight"
-              style={{ fontFamily: "'Inter', sans-serif", color: C.fg, letterSpacing: "-0.02em" }}
+              className="text-3xl md:text-4xl font-semibold mb-6 leading-tight"
+              style={{ fontFamily: "'Manrope', sans-serif", color: C.fg, letterSpacing: "-0.02em" }}
             >
               Building end-to-end,<br />from system design to deployment.
             </h2>
             <p
               className="leading-relaxed"
-              style={{ color: C.fgDim, fontFamily: "'Inter', sans-serif", fontSize: "0.95rem" }}
+              style={{ color: C.fgDim, fontFamily: "'Manrope', sans-serif", fontSize: "0.95rem" }}
             >
               {"I'm a full-stack software engineer currently pursuing my M.S. in Computer Science at Seattle University (GPA 3.8/4.0, 2× Student Honor Roll), with a B.Tech in Computer Science & Engineering. My experience spans backend microservices and cloud infrastructure at ADP, AI-integrated full-stack platforms, and even game development — I like building things end-to-end, from system design to deployment."}
             </p>
@@ -405,12 +413,12 @@ function AboutSection() {
 function ProjectsSection() {
   const C = useTheme();
   return (
-    <section id="projects" aria-labelledby="projects-heading" className="py-32" style={{ background: C.bgAlt }}>
+    <section id="projects" aria-labelledby="projects-heading" className="py-24 md:py-32" style={{ background: C.bgAlt }}>
       <div className="max-w-6xl mx-auto px-6">
         <SectionLabel id="projects-heading">Projects</SectionLabel>
 
         <div
-          className="mt-12 mb-8 p-8 md:p-12 relative overflow-hidden"
+          className="mt-10 md:mt-12 mb-8 p-6 md:p-12 relative overflow-hidden"
           style={{
             background: C.card,
             border: `1px solid ${C.accentBorder}`,
@@ -434,11 +442,11 @@ function ProjectsSection() {
 
             <h3
               className="text-2xl md:text-3xl font-semibold mb-1"
-              style={{ fontFamily: "'Inter', sans-serif", color: C.fg, letterSpacing: "-0.02em" }}
+              style={{ fontFamily: "'Manrope', sans-serif", color: C.fg, letterSpacing: "-0.02em" }}
             >
               Apply AI
             </h3>
-            <p className="text-sm mb-6" style={{ color: C.fgDim, fontFamily: "'Inter', sans-serif" }}>
+            <p className="text-sm mb-6" style={{ color: C.fgDim, fontFamily: "'Manrope', sans-serif" }}>
               AI-Powered Job Application Platform
             </p>
 
@@ -467,7 +475,7 @@ function ProjectsSection() {
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 text-sm font-medium transition-opacity duration-200 hover:opacity-70"
-              style={{ color: C.accent, fontFamily: "'Inter', sans-serif" }}
+              style={{ color: C.accent, fontFamily: "'Manrope', sans-serif" }}
             >
               <Github size={15} />
               View on GitHub
@@ -506,11 +514,11 @@ function ProjectCard({ project }: { project: typeof projects[0] }) {
       <div className="mb-4">
         <h4
           className="text-base font-semibold mb-0.5"
-          style={{ fontFamily: "'Inter', sans-serif", color: C.fg, letterSpacing: "-0.01em" }}
+          style={{ fontFamily: "'Manrope', sans-serif", color: C.fg, letterSpacing: "-0.01em" }}
         >
           {project.title}
         </h4>
-        <p className="text-xs" style={{ color: C.fgDimmer, fontFamily: "'Inter', sans-serif" }}>
+        <p className="text-xs" style={{ color: C.fgDimmer, fontFamily: "'Manrope', sans-serif" }}>
           {project.subtitle}
         </p>
       </div>
@@ -523,7 +531,7 @@ function ProjectCard({ project }: { project: typeof projects[0] }) {
 
       <p
         className="text-sm leading-relaxed flex-1 mb-5"
-        style={{ color: C.fgDim, fontFamily: "'Inter', sans-serif" }}
+        style={{ color: C.fgDim, fontFamily: "'Manrope', sans-serif" }}
       >
         {project.description}
       </p>
@@ -547,20 +555,21 @@ function ProjectCard({ project }: { project: typeof projects[0] }) {
 function ExperienceSection() {
   const C = useTheme();
   return (
-    <section id="experience" aria-labelledby="experience-heading" className="py-32" style={{ background: C.bg }}>
+    <section id="experience" aria-labelledby="experience-heading" className="py-24 md:py-32" style={{ background: C.bg }}>
       <div className="max-w-6xl mx-auto px-6">
         <SectionLabel id="experience-heading">Experience</SectionLabel>
 
-        <div className="mt-12 max-w-2xl">
+        <div className="mt-10 md:mt-12 max-w-2xl">
           <div className="relative pl-6" style={{ borderLeft: `1px solid ${C.timelineLine}` }}>
             {experience.map((item, i) => (
               <div key={i} className="relative mb-12 last:mb-0">
                 <div
-                  className="absolute -left-[25px] top-0.5 w-2.5 h-2.5 rounded-full"
+                  className="absolute top-0.5 w-2.5 h-2.5 rounded-full"
                   style={{
-                    background: item.type === "work" ? C.accent : C.timelineDot,
-                    border: item.type === "work" ? "none" : `1px solid ${C.border}`,
-                    boxShadow: item.type === "work" ? `0 0 10px ${C.accent}66` : "none",
+                    left: "calc(-1.5rem - 0.3125rem)",
+                    background: item.type === "work" || item.period.includes("Present") ? C.accent : C.timelineDot,
+                    border: item.type === "work" || item.period.includes("Present") ? "none" : `1px solid ${C.border}`,
+                    boxShadow: item.type === "work" || item.period.includes("Present") ? `0 0 10px ${C.accent}66` : "none",
                   }}
                 />
 
@@ -573,18 +582,18 @@ function ExperienceSection() {
 
                 <h3
                   className="text-lg font-semibold mb-0.5"
-                  style={{ fontFamily: "'Inter', sans-serif", color: C.fg, letterSpacing: "-0.01em" }}
+                  style={{ fontFamily: "'Manrope', sans-serif", color: C.fg, letterSpacing: "-0.01em" }}
                 >
                   {item.role}
                 </h3>
 
-                <p className="text-sm mb-3" style={{ color: C.accent, fontFamily: "'Inter', sans-serif" }}>
+                <p className="text-sm mb-3" style={{ color: C.accent, fontFamily: "'Manrope', sans-serif" }}>
                   {item.org}
                 </p>
 
                 <p
                   className="text-sm leading-relaxed"
-                  style={{ color: C.fgDim, fontFamily: "'Inter', sans-serif" }}
+                  style={{ color: C.fgDim, fontFamily: "'Manrope', sans-serif" }}
                 >
                   {item.detail}
                 </p>
@@ -600,39 +609,26 @@ function ExperienceSection() {
 function ContactSection() {
   const C = useTheme();
   return (
-    <section id="contact" aria-labelledby="contact-heading" className="py-32" style={{ background: C.bgAlt }}>
+    <section id="contact" aria-labelledby="contact-heading" className="py-24 md:py-32" style={{ background: C.bgAlt }}>
       <div className="max-w-6xl mx-auto px-6">
         <SectionLabel id="contact-heading">Contact</SectionLabel>
 
-        <div className="mt-12 grid md:grid-cols-2 gap-16 items-start">
+        <div className="mt-10 md:mt-12 grid md:grid-cols-[1.25fr_0.75fr] gap-12 md:gap-16 items-start">
           <div>
             <h2
-              className="text-3xl font-semibold mb-4 leading-tight"
-              style={{ fontFamily: "'Inter', sans-serif", color: C.fg, letterSpacing: "-0.02em" }}
+              className="text-3xl md:text-4xl font-semibold mb-4 leading-tight md:whitespace-nowrap"
+              style={{ fontFamily: "'Manrope', sans-serif", color: C.fg, letterSpacing: "-0.02em" }}
             >
               {"Let's build something great together."}
             </h2>
             <p
               className="leading-relaxed mb-8"
-              style={{ color: C.fgDim, fontFamily: "'Inter', sans-serif", fontSize: "0.95rem" }}
+              style={{ color: C.fgDim, fontFamily: "'Manrope', sans-serif", fontSize: "0.95rem" }}
             >
               Open to full-stack and backend engineering opportunities. If you have a role, a project,
               or just want to talk engineering — reach out.
             </p>
 
-            <a
-              href="mailto:gayathrisameeraa@gmail.com"
-              className="inline-flex items-center gap-2 px-6 py-3 text-sm font-medium transition-opacity duration-200 hover:opacity-80"
-              style={{
-                background: C.accent,
-                color: C.isDark ? "#0A0A0B" : "#FFFFFF",
-                fontFamily: "'Inter', sans-serif",
-                borderRadius: "2px",
-              }}
-            >
-              <Mail size={15} />
-              Send an Email
-            </a>
           </div>
 
           <div className="flex items-center gap-5">
@@ -668,7 +664,7 @@ function ContactSection() {
       </div>
 
       <div
-        className="mt-20 border-t pt-8 max-w-6xl mx-auto px-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"
+        className="mt-16 md:mt-20 border-t pt-8 max-w-6xl mx-auto px-6"
         style={{ borderColor: C.borderSubtle }}
       >
         <span
@@ -677,26 +673,6 @@ function ContactSection() {
         >
           © 2025 Gayathri Poluri
         </span>
-        <div className="flex items-center gap-6">
-          {[
-            { icon: <Github size={14} />, href: "https://github.com/gayathripoluri" },
-            { icon: <Linkedin size={14} />, href: "https://linkedin.com/in/gayathri-poluri" },
-            { icon: <Mail size={14} />, href: "mailto:gayathrisameeraa@gmail.com" },
-          ].map(({ icon, href }, i) => (
-            <a
-              key={i}
-              href={href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="transition-colors duration-200"
-              style={{ color: C.fgDimmest }}
-              onMouseEnter={(e) => (e.currentTarget.style.color = C.accent)}
-              onMouseLeave={(e) => (e.currentTarget.style.color = C.fgDimmest)}
-            >
-              {icon}
-            </a>
-          ))}
-        </div>
       </div>
     </section>
   );
@@ -708,7 +684,7 @@ function SectionLabel({ children, id }: { children: React.ReactNode; id: string 
     <div className="flex items-center gap-4">
       <h2
         id={id}
-        className="text-xs uppercase tracking-widest"
+        className="text-sm uppercase tracking-widest"
         style={{ color: C.accent, fontFamily: "'JetBrains Mono', monospace" }}
       >
         {children}
@@ -729,7 +705,7 @@ function TechTag({ children }: { children: React.ReactNode }) {
         fontFamily: "'JetBrains Mono', monospace",
         border: `1px solid ${C.accentBorder}`,
         borderRadius: "2px",
-        opacity: 0.85,
+        opacity: 1,
       }}
     >
       {children}
@@ -754,7 +730,7 @@ function CaseBlock({ label, children }: { label: string; children: React.ReactNo
       >
         {label}
       </span>
-      <p className="text-sm leading-relaxed" style={{ color: C.fgMuted, fontFamily: "'Inter', sans-serif" }}>
+      <p className="text-sm leading-relaxed" style={{ color: C.fgMuted, fontFamily: "'Manrope', sans-serif" }}>
         {children}
       </p>
     </div>
